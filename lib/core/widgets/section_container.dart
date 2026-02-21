@@ -1,0 +1,62 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+
+import '../responsive/responsive_layout.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_decoration.dart';
+import '../theme/app_spacing.dart';
+
+class SectionContainer extends StatelessWidget {
+  const SectionContainer({
+    super.key,
+    required this.child,
+    this.padding,
+    this.backgroundColor,
+    this.showTopDivider = true,
+  });
+
+  final Widget child;
+  final EdgeInsetsGeometry? padding;
+  final Color? backgroundColor;
+  final bool showTopDivider;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = AppColors.of(context);
+    final effectiveColor =
+        backgroundColor?.withValues(alpha: 0.70) ?? Colors.transparent;
+
+    Widget content = Container(
+      width: double.infinity,
+      color: effectiveColor,
+      padding: padding ?? AppSpacing.sectionPadding,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: ResponsiveLayout.contentWidth(context),
+          ),
+          child: Padding(
+            padding: AppSpacing.pagePadding,
+            child: child,
+          ),
+        ),
+      ),
+    );
+
+    // Frosted blur — softens animated background behind content
+    content = ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+        child: content,
+      ),
+    );
+
+    return Column(
+      children: [
+        if (showTopDivider) AppDecoration.sectionDivider(colors),
+        content,
+      ],
+    );
+  }
+}
