@@ -73,13 +73,18 @@ class _HeroSectionState extends State<HeroSection>
     final textTheme = Theme.of(context).textTheme;
     final colors = AppColors.of(context);
 
+    final isLight = colors.style == ThemeStyle.claymorphic;
+
     return RepaintBoundary(
       child: ClipRect(
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+          filter: ImageFilter.blur(
+            sigmaX: isLight ? 2 : 8,
+            sigmaY: isLight ? 2 : 8,
+          ),
           child: Container(
             width: double.infinity,
-            color: colors.background.withValues(alpha: 0.55),
+            color: colors.background.withValues(alpha: isLight ? 0.45 : 0.55),
             child: Stack(
           children: [
             // Animated gradient orbs

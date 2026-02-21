@@ -36,10 +36,14 @@ class AppFooter extends StatelessWidget {
         AppDecoration.sectionDivider(colors),
         ClipRect(
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+            filter: ImageFilter.blur(
+              sigmaX: colors.style == ThemeStyle.claymorphic ? 2 : 6,
+              sigmaY: colors.style == ThemeStyle.claymorphic ? 2 : 6,
+            ),
             child: Container(
               width: double.infinity,
-              color: colors.surfaceVariant.withValues(alpha: 0.75),
+              color: colors.surfaceVariant.withValues(
+                  alpha: colors.style == ThemeStyle.claymorphic ? 0.90 : 0.75),
               child: Center(
             child: ConstrainedBox(
               constraints: BoxConstraints(

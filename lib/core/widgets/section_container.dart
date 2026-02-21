@@ -24,8 +24,10 @@ class SectionContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
-    final effectiveColor =
-        backgroundColor?.withValues(alpha: 0.70) ?? Colors.transparent;
+    final isLight = colors.style == ThemeStyle.claymorphic;
+    final effectiveColor = backgroundColor?.withValues(
+            alpha: isLight ? 0.85 : 0.70) ??
+        Colors.transparent;
 
     Widget content = Container(
       width: double.infinity,
@@ -44,10 +46,11 @@ class SectionContainer extends StatelessWidget {
       ),
     );
 
-    // Frosted blur — softens animated background behind content
+    // Frosted blur — subtle on light theme, stronger on dark themes
+    final sigma = isLight ? 2.0 : 6.0;
     content = ClipRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+        filter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
         child: content,
       ),
     );
